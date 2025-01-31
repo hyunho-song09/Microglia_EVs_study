@@ -13,5 +13,7 @@ This project implements:
 ---
 🚀 How to Run
 To execute the full analysis pipeline, run:
-  source("main.R")
+```
+source("main.R")
+```
 
