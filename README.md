@@ -25,7 +25,7 @@ source("main.R")
 ``` src/metabolite_outliers.R ```
 #### Description:
 - Loads metabolomics and EV data from .xlsx files.
-- Identifies and removes outliers using robust standardization.
+- Identifies and removes outliers using robust standardization.  
 
 
 ### 2️⃣ Statistical Analysis
@@ -33,10 +33,10 @@ source("main.R")
 ``` src/t_test.R ```
 ``` src/anova.R ```
 ``` src/metabolite_Normality_and_Equal_Variance_test.R ```
-- Description:
-T-tests and ANOVA to compare groups.
-Shapiro-Wilk test for normality.
-Levene’s & Bartlett’s tests for homogeneity of variance.
+#### Description:
+- T-tests and ANOVA to compare groups.
+- Shapiro-Wilk test for normality.
+- Levene’s & Bartlett’s tests for homogeneity of variance.
 
 
 ### 3️⃣ Cliff’s Delta Calculation
