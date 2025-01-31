@@ -1,6 +1,6 @@
 # 🧬 Microglia EVs study
 
-This repository contains **R scripts** and **sample data** used for metabolomics and extracellular vesicle (EV) analysis in Alzheimer's Disease (AD) research. The pipeline includes data preprocessing, statistical analysis, multiple linear regression, and mediation analysis.
+This repository contains **R scripts** and **sample data** used for metabolomics and extracellular vesicle (EV) analysis in primary microglia cell related Alzheimer's Disease (AD) research. The pipeline includes data preprocessing, statistical analysis, multiple linear regression, and mediation analysis.
 <br />
 
 
