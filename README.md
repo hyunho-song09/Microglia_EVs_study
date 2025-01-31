@@ -25,8 +25,7 @@ source("main.R")
 ``` src/metabolite_outliers.R ```
 #### Description:
 - Loads metabolomics and EV data from .xlsx files.
-- Identifies and removes outliers using robust standardization.  
-
+- Identifies and removes outliers using robust standardization.
 
 ### 2️⃣ Statistical Analysis
 #### 📂 Scripts Used:
@@ -63,5 +62,5 @@ source("main.R")
 #### 📂 Script Used: 
 ``` src/multiple_linear_regression_mediation_analysis.R ```
 #### Description:
-- Identifies metabolic mediators between experimental groups.
+- Identifies metabolic mediators between experimental variables.
 - Integrates MLR results with mediation models.
