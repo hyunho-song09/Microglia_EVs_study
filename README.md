@@ -63,5 +63,5 @@ source("main.R")
 #### 📂 Script Used: 
 ``` src/multiple_linear_regression_mediation_analysis.R ```
 #### Description:
-- Identifies metabolic mediators between experimental variables.
+- Identifies metabolic mediators between variables.
 - Integrates MLR results with mediation models.
