@@ -21,9 +21,9 @@ source("main.R")
 ## 📊 Pipeline Details
 ### 1️⃣ Data Import & Preprocessing
 #### 📂 Scripts Used:
-- src/import_data.R
-- src/metabolite_outliers.R
-#### 📊 Description:
+``` src/import_data.R ```
+``` src/metabolite_outliers.R ```
+- Description:
 Loads metabolomics and EV data from .xlsx files.
 Identifies and removes outliers using robust standardization.
 
