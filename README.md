@@ -1,14 +1,15 @@
-# Microglia_EVs_study
-R scripts and sample data for Microglia EVs study
+# 🧬 Microglia_EVs_study
 
+This repository contains **R scripts** and **sample data** used for metabolomics and extracellular vesicle (EV) analysis in Alzheimer's Disease (AD) research. The pipeline includes data preprocessing, statistical analysis, multiple linear regression, and mediation analysis.
 
+## 📖 Overview
 
-
-
-
-
-If you use this repository, please cite our paper:
-Authors: Seong-Hun Bong1†, Hayoung Choi2, 3†, Hyun-Ho Song1†, Dong Kyu Kim2, 3, Inhee Mook-Jung2, 3, 4*, and Do Yup Lee1, 5, 6*
-Title: Metabolic reprogramming in primary microglial cell and extracellular vesicle triggered by Aβ exposure
-Journal: Journal of Neurochemistry
-DOI: - 
+This project implements:
+- **Data Import & Preprocessing**: Reads Excel-based omics datasets.
+- **Statistical Testing**: T-tests, ANOVA, normality, and variance tests.
+- **Metabolomics Analysis**: Outlier detection, Cliff’s Delta calculation.
+- **Multiple Linear Regression (MLR)**: Identifies relationships between variables.
+- **Mediation Analysis**: Explores potential mediators in metabolic pathways.
+---
+🚀 How to Run
+source("main.R")
