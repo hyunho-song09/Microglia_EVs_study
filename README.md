@@ -57,11 +57,11 @@ source("main.R")
 ``` src/multiple_linear_regression_mediation_analysis.R ```
 #### Description:
 - Performs multiple linear regression (MLR) across datasets:
-- Group vs Cell
-- Cell vs Media
-- Group vs Media
-- Cell vs EV
-- Group vs EV
+1) Group vs Cell
+2) Cell vs Media
+3) Group vs Media
+4) Cell vs EV
+5) Group vs EV
 - Adjusts p-values using Benjamini-Hochberg correction.
 <br />
 
