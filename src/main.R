@@ -1,22 +1,13 @@
-################################
-########## EV Part #############
-################################
+source("config.R")
+source("src/import_data.R")
+source("src/t_test.R")
+source("src/anova.R")
+source("src/metabolite_outliers.R")
+source("src/metabolite_Normality_and_Equal_Variance_test.R")
+source("src/cliff_delta.R")
+source("src/multiple_linear_regression_mediation_analysis")
 
-
-# 01-1. [EV] Import Data
-#####
-rm(list=ls())
-
-library(xlsx)
-
-# Load datasets
-input.BC.df <- read.xlsx("example_data_01.xlsx", sheetName = "input_fig_BC")
-input.D.df <- read.xlsx("example_data_01.xlsx", sheetName = "input_fig_D")
-input.D.ex <- input.D.df[c(1:3,7:9),]
-input.D.mi <- input.D.df[c(4:6,10:12),]
-#####
-
-# 01-2. [EV] Check Conditions for T-Test
+# 01-1. [EV] Check Conditions for T-Test
 #####
 library(lawstat)
 
@@ -46,108 +37,48 @@ bartlett.test(input.D.df[c(1:3,7:9),]$C, input.D.df[c(1:3,7:9),]$Group)$p.value
 bartlett.test(input.D.df[c(4:6,10:12),]$C, input.D.df[c(4:6,10:12),]$Group)$p.value
 #####
 
-# 01-3. [EV] Perform Statistical Tests
+# 01-2. [EV] Perform Statistical Tests
 #####
 
-# Load necessary library
-library(dplyr)
-
-# Function for performing t-test and reporting results
-t_test_report <- function(data, variable) {
-  t_test <- t.test(data[[variable]] ~ data$Group, var.equal = TRUE)
-  
-  cat("\nT-test for", variable, "\n")
-  cat("Degrees of Freedom:", t_test$parameter, "\n")
-  cat("T value:", t_test$statistic, "\n")
-  cat("P value:", t_test$p.value, "\n")
-}
-
-# Perform t-tests
-t_test_report(input.BC.df[,2:4], "A")
-t_test_report(input.BC.df[,2:4], "B")
+# Run T-tests
+t_test_results_A <- t_test_report(input.BC.df[,2:4], "A")
+t_test_results_B <- t_test_report(input.BC.df[,2:4], "B")
 
 t_test_report(input.D.ex[,2:3], "C")
 t_test_report(input.D.mi[,2:3], "C")
 
-# Function for performing ANOVA and reporting results
-anova_report <- function(data, variable) {
-  aov_model <- aov(data[[variable]] ~ data$Group)
-  anova_summary <- summary(aov_model)
-  
-  cat("\nANOVA for", variable, "\n")
-  cat("Degrees of Freedom: Between =", anova_summary[[1]]$Df[1], ", Within =", anova_summary[[1]]$Df[2], "\n")
-  cat("F value:", anova_summary[[1]]$`F value`[1], "\n")
-  cat("P value:", anova_summary[[1]]$`Pr(>F)`[1], "\n")
-}
+# Run ANOVA
+anova_results_C <- anova_report(input.D.df[,2:3], "C")
 
-# Perform ANOVA
-anova_report(input.D.df[,2:3], "C")
+# Save Results
+write.csv(t_test_results_A, paste0(results_path, "t_test_results_A.csv"), row.names = FALSE)
+write.csv(t_test_results_B, paste0(results_path, "t_test_results_B.csv"), row.names = FALSE)
+write.csv(anova_results_C, paste0(results_path, "anova_results_C.csv"), row.names = FALSE)
 
-# Perform multiple statistical tests using LMSstat package
-library(LMSstat)
-
-input.BC.stat <- Allstats(input.BC.df, Adjust_p_value = FALSE)
-input.BC.stat$Result
-
-input.D.stat <- Allstats(input.D.df, Adjust_p_value = FALSE)
-
-# Extract statistical results
-input.D.stat$t_test[1,]
-input.D.stat$Anova
-input.D.stat$Anova_PostHoc[1,]
-
-# Subset data and perform further statistical tests
-input.D.ex.stat <- Allstats(input.D.ex, Adjust_p_value = FALSE)
-input.D.ex.stat$t_test
-input.D.mi.stat <- Allstats(input.D.mi, Adjust_p_value = FALSE)
-input.D.mi.stat$t_test
+# # Perform multiple statistical tests using LMSstat package
+# library(LMSstat)
+# 
+# input.BC.stat <- Allstats(input.BC.df, Adjust_p_value = FALSE)
+# input.BC.stat$Result
+# input.D.stat <- Allstats(input.D.df, Adjust_p_value = FALSE)
+# 
+# # Extract statistical results
+# input.D.stat$t_test[1,]
+# input.D.stat$Anova
+# input.D.stat$Anova_PostHoc[1,]
+# 
+# # Subset data and perform further statistical tests
+# input.D.ex.stat <- Allstats(input.D.ex, Adjust_p_value = FALSE)
+# input.D.ex.stat$t_test
+# input.D.mi.stat <- Allstats(input.D.mi, Adjust_p_value = FALSE)
+# input.D.mi.stat$t_test
 
 #####
 
 
-################################
-###### Metabolomics Part #######
-################################
-
-# 02-1. [Metabolomics] Import Data
+# 02-1. [Metabolomics] outlier test
 #####
-rm(list=ls())
-
-setwd("D:/project/experiment/BrainOmics/AD_omics/241024_EV_manuscript")
-
-library(xlsx)
-cell.df <- read.xlsx("example_data_02.xlsx", sheetName = "ex2")
-media.df <- read.xlsx("example_data_03.xlsx", sheetName = "ex3")
-EV.df <- read.xlsx("example_data_04.xlsx", sheetName = "ex4")
-#####
-
-# 02-2. [Metabolomics] outlier test
-#####
-# Perform Robust Standardization based outlier detection
-detect_outliers_robust <- function(data, group_col, group, robust_thresh = 5) {
-  # Subset data by group
-  group_data <- data[data[[group_col]] == group, ]
-  
-  # Initialize outlier count dataframe
-  outlier_counts <- data.frame(metabolite = colnames(group_data)[3:ncol(group_data)], outlier_count = 0)
-  
-  # Calculate Robust Standardization scores for each metabolite
-  for (met in colnames(group_data)[3:ncol(group_data)]) {
-    values <- group_data[[met]]
-    median_val <- median(values, na.rm = TRUE) # Compute median
-    sd_val <- sd(values, na.rm = TRUE)         # Compute standard deviation
-    
-    # Robust standardization
-    robust_scores <- (values - median_val) / sd_val
-    
-    # Count outliers based on threshold
-    outlier_counts$outlier_count[outlier_counts$metabolite == met] <- sum(abs(robust_scores) > robust_thresh)
-  }
-  
-  return(outlier_counts)
-}
-
-# Apply Robust Standardization to different datasets
+# Detect Outliers
 
 # cell
 ab_outliers_cell <- detect_outliers_robust(cell.df, group_col = "Group", group = "G1", robust_thresh = 3)
@@ -165,8 +96,18 @@ control_outliers_EV <- detect_outliers_robust(EV.df, group_col = "Group", group 
 EV_outlier <- merge(ab_outliers_EV, control_outliers_EV, by = "metabolite", suffixes = c("_G1", "_G0"))
 #####
 
-# 02-3. [Metabolomics] Mann whitney u-test
+# 02-2. [Metabolomics] Mann whitney u-test
 #####
+# metabolite normality, equal variance test
+library(dplyr)
+library(tidyr)
+library(xlsx)
+library(lawstat)
+
+cell.output <- analyze_metabolites(cell.df)
+media.output <- analyze_metabolites(media.df)
+EV.output <- analyze_metabolites(EV.df)
+
 
 library(LMSstat)
 
@@ -180,97 +121,14 @@ media.results <- data.frame(media.stats$Result,
                             p.adjust(media.stats$t_test, method = "BH"),
                             p.adjust(media.stats$u_test, method = "BH"))
 
-
 EV.stats <- Allstats(EV.df, Adjust_p_value = F)
 EV.results <- data.frame(EV.stats$Result,
                          p.adjust(EV.stats$t_test, method = "BH"),
                          p.adjust(EV.stats$u_test, method = "BH"))
-
-# metabolite normality, equal variance test
-library(dplyr)
-library(tidyr)
-library(xlsx)
-library(lawstat)
-
-analyze_metabolites <- function(data) {
-  results <- data.frame(Metabolite = character(), 
-                        Normality_AB_p = numeric(), 
-                        Normality_Control_p = numeric(), 
-                        Normality = integer(), 
-                        Homogeneity_bartlett_p = numeric(), 
-                        Homogeneity_bartlett = integer(),
-                        Homogeneity_levene_p = numeric(), 
-                        Homogeneity_levene = integer(), 
-                        stringsAsFactors = FALSE)
-  
-  group_ab <- data %>% filter(Group == 'G1')
-  group_control <- data %>% filter(Group == 'G0')
-  
-  for (met in colnames(data)[3:ncol(data)]) {
-    ab_values <- group_ab[[met]]
-    control_values <- group_control[[met]]
-    
-    shapiro_ab <- shapiro.test(ab_values)$p.value
-    shapiro_control <- shapiro.test(control_values)$p.value
-    
-    normality <- ifelse(shapiro_ab > 0.05 & shapiro_control > 0.05, 1, 0)
-    
-    if (normality == 1) {
-      bartlett_p <- bartlett.test(list(ab_values, control_values))$p.value
-      homogeneity_bartlett <- ifelse(bartlett_p > 0.05, 1, 0)
-    } else {
-      bartlett_p <- NA
-      homogeneity_bartlett <- 0
-    }
-    
-    # levene.test 수정
-    levene_p <- levene.test(c(ab_values, control_values), 
-                            group = rep(1:2, times = c(length(ab_values), length(control_values))))$p.value
-    
-    homogeneity_levene <- ifelse(levene_p > 0.05, 1, 0)
-    
-    results <- rbind(results, data.frame(
-      Metabolite = met, 
-      Normality_AB_p = shapiro_ab, 
-      Normality_Control_p = shapiro_control, 
-      Normality = normality, 
-      Homogeneity_bartlett_p = bartlett_p, 
-      Homogeneity_bartlett = homogeneity_bartlett,
-      Homogeneity_levene_p = levene_p, 
-      Homogeneity_levene = homogeneity_levene
-    ))
-  }
-  return(results)
-}
-
-cell.output <- analyze_metabolites(cell.df)
-media.output <- analyze_metabolites(media.df)
-EV.output <- analyze_metabolites(EV.df)
-
 #####
 
-# 02-4. [Metabolomics] Cliff_delta cacluation
+# 02-3. [Metabolomics] Cliff_delta cacluation
 #####
-
-library(effsize)
-
-cliff_delta_fun <- function(data, variable) {
-  # Extract values for each group
-  group_0 <- data[[variable]][data$Group == "G0"]
-  group_1 <- data[[variable]][data$Group == "G1"]
-  
-  # Compute Cliff's Delta
-  delta_result <- cliff.delta(group_1, group_0)
-  
-  # Return a data frame with results
-  return(data.frame(
-    Metric = variable,
-    Delta = delta_result$estimate,
-    Magnitude = as.character(delta_result$magnitude),
-    stringsAsFactors = FALSE
-  ))
-}
-
 cell.results <- data.frame()
 for (col in colnames(cell.df)[3:ncol(cell.df)]){
   cell.results <- rbind(cell.results, cliff_delta_fun(cell.df, col))}
@@ -285,21 +143,8 @@ for (col in colnames(EV.df)[3:ncol(EV.df)]){
 
 #####
 
-# 02-5. [Metabolomics] Multiple linear regression
+# 02-4. [Metabolomics] multiple linear regression
 #####
-
-library(dplyr)
-library(doParallel)
-library(doSNOW)
-
-# creat function
-meta.MLR.calculator <- function (X,Y,C,covariate) {
-  print("Running...")
-  
-  # Internal Use Only / Private Code
-  
-}
-
 # 01) Group vs Cell
 MLR_Group_Cell.sig <- meta.MLR.calculator(X=Group.df.sig,
                                           Y=Cell.df.sig,
@@ -352,27 +197,14 @@ asso_results.Group_Cell_Media.sig <- asso_results.tmp.sig %>% filter(Pval <= 0.0
 # Group vs Cell vs EV
 asso_results.tmp.sig <- rbind(MLR_Group_Cell.sig, MLR_Cell_EV.sig, MLR_Group_EV.sig)
 asso_results.Group_Cell_EV.sig <- asso_results.tmp.sig %>% filter(Pval <= 0.05)
-
 #####
 
-# 02-6. [Metabolomics] Mediation analysis
+# 02-5. [Metabolomics] mediation analysis
 #####
 library(unglue)
 
 nm.tmp <- asso_results.Group_Cell_Media.sig %>% filter(Pval <= 0.05)
 nm <-  unique(c(unlist(nm.tmp["X"]), unlist(nm.tmp["Y"])))
-
-library(dplyr)
-library(doParallel)
-library(doSNOW)
-
-# create function
-meta.mediate.calculator <- function (X,M,Y,C,covariate) {
-  print("Running...")
-  
-  # Internal Use Only / Private Code
-  
-}
 
 # output media
 # Create input dataframe
@@ -405,8 +237,7 @@ colnames(mediation.results.tmp)[26:27] <- c("X_Y_coef", "X_Y_pval")
 mediation.results.tmp <- merge(mediation.results.tmp, asso_results.tmp[,c("M_Y_index","coef","Pval")], by = "M_Y_index")
 colnames(mediation.results.tmp)[28:29] <- c("M_Y_coef", "M_Y_pval")
 
-final.results <- cbind(mediation.results.tmp[,c(23,4:6,24:29,7:22)])
-
+final.results.01 <- mediation.results.tmp[,c(23,4:6,24:29,7:22)]
 
 # output EV
 # Create input dataframe
@@ -442,13 +273,6 @@ colnames(mediation.results.tmp)[26:27] <- c("X_Y_coef", "X_Y_pval")
 mediation.results.tmp <- merge(mediation.results.tmp, asso_results.tmp[,c("M_Y_index","coef","Pval")], by = "M_Y_index")
 colnames(mediation.results.tmp)[28:29] <- c("M_Y_coef", "M_Y_pval")
 
-final.results <- cbind(mediation.results.tmp[,c(23,4:6,24:29,7:22)])
-
-
+final.results.02 <- mediation.results.tmp[,c(23,4:6,24:29,7:22)]
+                       
 #####
-
-
-
-
-
-
