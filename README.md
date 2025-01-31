@@ -23,9 +23,9 @@ source("main.R")
 #### 📂 Scripts Used:
 ``` src/import_data.R ```
 ``` src/metabolite_outliers.R ```
-- Description:
-Loads metabolomics and EV data from .xlsx files.
-Identifies and removes outliers using robust standardization.
+#### Description:
+- Loads metabolomics and EV data from .xlsx files.
+- Identifies and removes outliers using robust standardization.
 
 
 ### 2️⃣ Statistical Analysis
