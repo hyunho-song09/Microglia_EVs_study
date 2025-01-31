@@ -11,19 +11,19 @@ This project implements:
 - **Multiple Linear Regression (MLR)**: Identifies relationships between variables.
 - **Mediation Analysis**: Explores potential mediators in metabolic pathways.
 ---
-🚀 How to Run
+## 🚀 How to Run
 To execute the full analysis pipeline, run:
 ```
 source("main.R")
 ```
 
-📊 Pipeline Details
-1️⃣ Data Import & Preprocessing
-📂 Scripts Used:
+### 📊 Pipeline Details
+### 1️⃣ Data Import & Preprocessing
+### 📂 Scripts Used:
 
-src/import_data.R
-src/metabolite_outliers.R
-📊 Description:
+- src/import_data.R
+- src/metabolite_outliers.R
+### 📊 Description:
 
 Loads metabolomics and EV data from .xlsx files.
 Identifies and removes outliers using robust standardization.
