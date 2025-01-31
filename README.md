@@ -42,26 +42,26 @@ source("main.R")
 ### 3️⃣ Cliff’s Delta Calculation
 #### 📂 Script Used:
 ``` src/cliff_delta.R ```
-- Description:
-Calculates Cliff’s Delta, a non-parametric effect size measure
+#### Description:
+- Calculates Cliff’s Delta, a non-parametric effect size measure
 
 
 ### 4️⃣ Multiple Linear Regression (MLR)
 #### 📂 Script Used: 
 ``` src/multiple_linear_regression_mediation_analysis.R ```
-- Description:
-Performs multiple linear regression (MLR) across datasets:
-Group vs Cell
-Cell vs Media
-Group vs Media
-Cell vs EV
-Group vs EV
-Adjusts p-values using Benjamini-Hochberg correction.
+#### Description:
+- Performs multiple linear regression (MLR) across datasets:
+- Group vs Cell
+- Cell vs Media
+- Group vs Media
+- Cell vs EV
+- Group vs EV
+- Adjusts p-values using Benjamini-Hochberg correction.
 
 
 ### 5️⃣ Mediation Analysis
 #### 📂 Script Used: 
 ``` src/multiple_linear_regression_mediation_analysis.R ```
-- Description:
-Identifies metabolic mediators between experimental groups.
-Integrates MLR results with mediation models.
+#### Description:
+- Identifies metabolic mediators between experimental groups.
+- Integrates MLR results with mediation models.
