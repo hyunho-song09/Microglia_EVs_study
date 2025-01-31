@@ -30,10 +30,10 @@ Identifies and removes outliers using robust standardization.
 
 ### 2️⃣ Statistical Analysis
 #### 📂 Scripts Used:
-- src/t_test.R
-- src/anova.R
-- src/metabolite_Normality_and_Equal_Variance_test.R
-#### 📊 Description:
+``` src/t_test.R ```
+``` src/anova.R ```
+``` src/metabolite_Normality_and_Equal_Variance_test.R ```
+- Description:
 T-tests and ANOVA to compare groups.
 Shapiro-Wilk test for normality.
 Levene’s & Bartlett’s tests for homogeneity of variance.
@@ -41,14 +41,15 @@ Levene’s & Bartlett’s tests for homogeneity of variance.
 
 ### 3️⃣ Cliff’s Delta Calculation
 #### 📂 Script Used:
-- src/cliff_delta.R
-#### 📊 Description:
+``` src/cliff_delta.R ```
+- Description:
 Calculates Cliff’s Delta, a non-parametric effect size measure
 
 
 ### 4️⃣ Multiple Linear Regression (MLR)
-#### 📂 Script Used: src/multiple_linear_regression_mediation_analysis.R
-#### 📊 Description:
+#### 📂 Script Used: 
+``` src/multiple_linear_regression_mediation_analysis.R ```
+- Description:
 Performs multiple linear regression (MLR) across datasets:
 Group vs Cell
 Cell vs Media
@@ -59,7 +60,8 @@ Adjusts p-values using Benjamini-Hochberg correction.
 
 
 ### 5️⃣ Mediation Analysis
-#### 📂 Script Used: src/multiple_linear_regression_mediation_analysis.R
-#### 📊 Description:
+#### 📂 Script Used: 
+``` src/multiple_linear_regression_mediation_analysis.R ```
+- Description:
 Identifies metabolic mediators between experimental groups.
 Integrates MLR results with mediation models.
