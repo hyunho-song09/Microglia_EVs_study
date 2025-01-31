@@ -12,4 +12,6 @@ This project implements:
 - **Mediation Analysis**: Explores potential mediators in metabolic pathways.
 ---
 🚀 How to Run
-source("main.R")
+To execute the full analysis pipeline, run:
+  source("main.R")
+
