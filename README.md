@@ -72,6 +72,8 @@ source("main.R")
 - Identifies metabolic mediators between variables.
 - Integrates MLR results with mediation models.
 
+### 🧬 Publication
+
 **Seong-Hun Bong, Hayoung Choi, Hyun-Ho Song, Dong Kyu Kim, Inhee Mook-Jung, Do Yup Lee** (2025).  
 *Metabolic Reprogramming in Primary Microglial Cell and Extracellular Vesicle Triggered by Aβ Exposure*.  
-**Journal of Neurochemistry**. https://doi.org/10.1111/jnc.70030
+[https://doi.org/10.1111/jnc.70030](https://doi.org/10.1111/jnc.70030)
