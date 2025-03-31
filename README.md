@@ -71,10 +71,10 @@ source("main.R")
 #### Description:
 - Identifies metabolic mediators between variables.
 - Integrates MLR results with mediation models.
+<br />
 
 
-
-### 🧬 Publication
+### 6️⃣ Publication
 
 **Seong-Hun Bong, Hayoung Choi, Hyun-Ho Song, Dong Kyu Kim, Inhee Mook-Jung, Do Yup Lee** (2025).  
 *Metabolic Reprogramming in Primary Microglial Cell and Extracellular Vesicle Triggered by Aβ Exposure*.  
